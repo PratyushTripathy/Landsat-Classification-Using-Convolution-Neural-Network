@@ -1,8 +1,8 @@
 """
+(1/3)
 Supporting script for the medium post titled:
 'Is CNN equally shiny on mid-resolution satellite data?'
 available at https://medium.com/p/9e24e68f0c08
-
 
 Author: Pratyush Tripathy
 Date: 21 April, 2020
@@ -12,16 +12,12 @@ numpy - 1.17.2
 sklearn - 0.22.1
 pyrsgis - 0.3.1
 tensorflow - 2.0.0
-
 """
 
 import os, math, random, glob, time
 random.seed(2)
 import numpy as np
 from pyrsgis import raster
-
-import logging
-logging.getLogger('tensorflow').disabled = True
 
 #####################################################################
 ##### PART - A: READING AND STORING IMAGE CHIPS AS NUMPY ARRAYS #####
