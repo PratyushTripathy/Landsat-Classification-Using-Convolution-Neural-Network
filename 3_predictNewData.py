@@ -14,7 +14,7 @@ pyrsgis - 0.3.1
 tensorflow - 2.0.0
 """
 
-import os, math
+import os, math, random
 random.seed(2)
 import numpy as np
 import tensorflow as tf
