@@ -1,2 +1,2 @@
 # Landsat-Classification-using-Convolution-Neural-Network
-Source code and files mentioned in the medium post.
+Please use one script at a time in order. These scripts serve same purpose as the three parts of the post.
