@@ -118,7 +118,7 @@ print("Confusion matrix:\n", cMatrix)
 print("\nP-Score: %.3f, R-Score: %.3f, F-Score: %.3f" % (pScore, rScore, fScore))
 
 # Save the model to use later
-if not os.path.exists(os.path.join(os.getcwd(), 'trained_model')):
-    os.mkdir(os.path.join(os.getcwd(), 'trained_model'))
+if not os.path.exists(os.path.join(os.getcwd(), 'trained_models')):
+    os.mkdir(os.path.join(os.getcwd(), 'trained_models'))
     
 model.save('trained_models/200409_CNN_Builtup_11by11_PScore%.3f_RScore%.3f_FScore%.3f.h5' % (pScore, rScore, fScore)) 
