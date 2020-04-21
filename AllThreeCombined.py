@@ -3,17 +3,14 @@ Supporting script for the medium post titled:
 'Is CNN equally shiny on mid-resolution satellite data?'
 available at https://medium.com/p/9e24e68f0c08
 
-
 Author: Pratyush Tripathy
 Date: 21 April, 2020
 
 Following package versions were used:
-
 numpy - 1.17.2
 sklearn - 0.22.1
 pyrsgis - 0.3.1
 tensorflow - 2.0.0
-
 """
 
 import os, math, random, glob, time
@@ -25,15 +22,8 @@ from sklearn.utils import resample
 
 from tensorflow import keras
 from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten
-from tensorflow.keras.callbacks import ModelCheckpoint
-from pyrsgis import raster
-from pyrsgis.convert import changeDimension
 from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score
 from matplotlib import pyplot as plt
-
-import logging
-logging.getLogger('tensorflow').disabled = True
-
 
 #####################################################################
 ##### PART - A: READING AND STORING IMAGE CHIPS AS NUMPY ARRAYS #####
@@ -226,4 +216,3 @@ raster.export(prediction, ds, filename=outFile, dtype='float')
 
 plt.imshow(prediction)
 plt.show()
-
