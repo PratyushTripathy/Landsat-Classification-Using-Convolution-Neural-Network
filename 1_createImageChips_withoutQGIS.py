@@ -5,12 +5,12 @@ Supporting script for the medium post titled:
 available at https://medium.com/p/9e24e68f0c08
 
 Author: Pratyush Tripathy
-Date: 21 April, 2020
+Date: 29 May, 2021
 
 Following package versions were used:
 numpy - 1.17.2
 sklearn - 0.22.1
-pyrsgis - 0.3.1
+pyrsgis - 0.3.9
 tensorflow - 2.0.0
 """
 
@@ -41,37 +41,19 @@ else:
     print("Rasters' shape matched.")
 
     # Generate image chips in the back-end
-    def CNNdataGenerator(mxBands, labelBand, kSize):
-        mxBands = mxBands / 255.0
-        nBands, rows, cols = mxBands.shape
+    # create feature chips using pyrsgis
+      
+    features = imageChipsFromFile(feature_raster_file, x_size=7, y_size=7)
+    """
+    Since I added this code chunk later, I wanted to make least 
+    possible changes in the remaining sections. The below line changes
+    the index of the channels. This will be undone at a later stage.
+    """
+    features = np.rollaxis(features, 3, 1)
+
+    # read the label file and reshape it
+    labels = label_raster.flatten()
         
-        margin = math.floor(kSize/2)
-        mxBands = np.pad(mxBands, margin, mode='constant')[margin:-margin, :, :]
-        labelBand = np.pad(labelBand, margin, mode='constant')
-
-        features_arr = np.empty((rows*cols, kSize, kSize, nBands))
-        labels_arr = np.empty((rows*cols, ))
-
-        n = 0
-        for row in range(margin, rows+margin):
-            for col in range(margin, cols+margin):
-                if (row % 500 == 0) and (col % 500 == 0):
-                    print('Row: %d/%d, Col: %d/%d' % (row, rows, col, cols))
-                                         
-                feat = mxBands[:, row-margin:row+margin+1, col-margin:col+margin+1]
-                label = labelBand[row, col]
-
-                b1, b2, b3, b4, b5 = feat
-                feat = np.dstack((b1, b2, b3, b4, b5))
-
-                features_arr[n, :, :, :] = feat
-                labels_arr[n] = label
-                n += 1
-                
-        return(features_arr, labels_arr)
-
-    features, labels = CNNdataGenerator(feature_raster, label_raster, kSize=3)
-       
     print('Input features shape:', features.shape)
     print('Input labels shape:', labels.shape)
     print('Values in input features, min: %d & max: %d' % (features.min(), features.max()))
