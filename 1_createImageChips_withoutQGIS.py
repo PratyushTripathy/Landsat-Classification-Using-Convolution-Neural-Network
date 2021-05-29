@@ -18,6 +18,7 @@ import os, math, random, glob, time
 random.seed(2)
 import numpy as np
 from pyrsgis import raster
+from pyrsgis.ml import imageChipsFromFile
 
 #####################################################################
 ##### PART - A: CREATING AND STORING IMAGE CHIPS AS NUMPY ARRAYS ####
@@ -27,39 +28,31 @@ from pyrsgis import raster
 output_directory = r"E:\TDS_CNN"
 os.chdir(output_directory)
 
-# Read the feature and label rasters
-feature_raster_file = r"Jiaxing_2015_Landsat.tif"
-label_raster_file = r"Jiaxing_2015_builtup.tif"
+# define the file names
+feature_file = r"E:\CNN_Builtup\l5_Bangalore2011_raw.tif"
+label_file = r"E:\CNN_Builtup\l5_Bangalore2011_builtup.tif"
 
-ds, feature_raster = raster.read(feature_raster_file)
-ds, label_raster = raster.read(label_raster_file)
+# create feature chips using pyrsgis
+features = imageChipsFromFile(feature_file, x_size=7, y_size=7)
 
-if (feature_raster.shape[-1] != label_raster.shape[-1]) or\
-   (feature_raster.shape[-2] != label_raster.shape[-2]):
-    print('Shape of the input rasters do not match. Ending program.')
-else:
-    print("Rasters' shape matched.")
+""" Update: 29 May 2021
+Since I added this code chunk later, I wanted to make least 
+possible changes in the remaining sections. The below line changes
+the index of the channels. This will be undone at a later stage.
+"""
+features = np.rollaxis(features, 3, 1)
 
-    # Generate image chips in the back-end
-    # create feature chips using pyrsgis
-      
-    features = imageChipsFromFile(feature_raster_file, x_size=7, y_size=7)
-    """
-    Since I added this code chunk later, I wanted to make least 
-    possible changes in the remaining sections. The below line changes
-    the index of the channels. This will be undone at a later stage.
-    """
-    features = np.rollaxis(features, 3, 1)
+# read the label file and reshape it
+ds, labels = raster.read(label_file)
+labels = labels.flatten()
 
-    # read the label file and reshape it
-    labels = label_raster.flatten()
-        
-    print('Input features shape:', features.shape)
-    print('Input labels shape:', labels.shape)
-    print('Values in input features, min: %d & max: %d' % (features.min(), features.max()))
-    print('Values in input labels, min: %d & max: %d' % (labels.min(), labels.max()))
+# print basic details
+print('Input features shape:', features.shape)
+print('\nInput labels shape:', labels.shape)
+print('Values in input features, min: %d & max: %d' % (features.min(), features.max()))
+print('Values in input labels, min: %d & max: %d' % (labels.min(), labels.max()))
 
-    # Save the arrays as .npy files
-    np.save('CNN_3by3_features.npy', features)
-    np.save('CNN_3by3_labels.npy', labels)
-    print('Arrays saved at location %s' % (os.getcwd()))
+# Save the arrays as .npy files
+np.save('CNN_7by7_features.npy', features)
+np.save('CNN_7by7_labels.npy', labels)
+print('Arrays saved at location %s' % (os.getcwd()))
