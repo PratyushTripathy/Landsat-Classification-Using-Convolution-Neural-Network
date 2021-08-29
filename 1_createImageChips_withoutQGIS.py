@@ -46,6 +46,9 @@ features = np.rollaxis(features, 3, 1)
 ds, labels = raster.read(label_file)
 labels = labels.flatten()
 
+# check for irrelevant values (we are interested in 1s and non-1s)
+labels = (labels == 1).astype(int)
+
 # print basic details
 print('Input features shape:', features.shape)
 print('\nInput labels shape:', labels.shape)
