@@ -50,8 +50,10 @@ for n, file in enumerate(glob.glob('*.tif')):
 
     features[n, :, :, :] = tempArr
     labels[n] = tempLabel
-    
-    
+
+# check for irrelevant values (we are interested in 1s and non-1s)
+labels = (labels == 1).astype(int) # added on 29 Aug 2021
+   
 print('Input features shape:', features.shape)
 print('Input labels shape:', labels.shape)
 print('Values in input features, min: %d & max: %d' % (features.min(), features.max()))
